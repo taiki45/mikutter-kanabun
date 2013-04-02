@@ -20,7 +20,7 @@ Plugin.create(:kanabun) do
       [
         service,
         msgs.map do |msg|
-          msg[:message] = msg[:message].gsub /[ァ-ヴ]+/u, "カナブン" if msg.respond_to?(:[]) && msg[:message].respond_to?(:gsub)
+          msg[:message] = msg[:message].gsub /[ァ-ヴ]+/u, "カナブン" if msg && msg[:message].respond_to?(:gsub)
           msg
         end
       ]
