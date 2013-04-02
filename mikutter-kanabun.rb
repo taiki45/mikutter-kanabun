@@ -6,7 +6,7 @@ Plugin.create(:kanabun) do
   command(
     :kanabun,
     name: "カナブンを食べる",
-    condition: lambda{|_| true},
+    condition: lambda {|_| true },
     visible: false,
     role: :window
   ) do |opt|
@@ -15,13 +15,19 @@ Plugin.create(:kanabun) do
     }
   end
 
-  filter_update do |service, msgs|
-    [
-      service,
-      msgs.map do |msg|
-        msg[:message] = msg[:message].gsub /[ァ-ヴ]+/u, "カナブン" if msg && msg[:message].respond_to?(:gsub)
-        msg
-      end
-    ]
+  if UserConfig[:kanabun_filter]
+    filter_update do |service, msgs|
+      [
+        service,
+        msgs.map do |msg|
+          msg[:message] = msg[:message].gsub /[ァ-ヴ]+/u, "カナブン" if msg.respond_to?(:[]) && msg[:message].respond_to?(:gsub)
+          msg
+        end
+      ]
+    end
+  end
+
+  settings "カナブン" do
+    boolean "ておくれ神と同一化したくはないか？", :kanabun_filter
   end
 end
